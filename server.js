@@ -14,6 +14,10 @@ var web = http.createServer(function(req, res){
 		res.writeHead(200, {'Content-Type': 'text/html'}); 
 		res.write(fs.readFileSync('index.html')); 
 		res.end(); 
+	case '/map.jpg':
+		res.writeHead(200, {'Content-Type': 'image/jpeg'});
+                res.write(fs.readFileSync('map.jpg'));
+                res.end();
 	break;
 	
 }
@@ -51,7 +55,9 @@ var server = net.createServer(function (stream) {
 			lines.forEach(function(line) {
 				idx.search(line.split(' ')[0], function(loc) {
 					console.log(loc);
-					//ws.broadcast(loc);
+					if(loc.substr(0,2) != "RD") {
+						ws.broadcast(loc);
+					}
 				});
 			});
 		}

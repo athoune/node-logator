@@ -11,7 +11,10 @@
 				console.log("I'm alive");
 				});
 			socket.on('message', function(data){
-				console.log(data);
+				var v = data.split('|');
+				var x = (parseFloat(v[6]) + 180) / 360 * 600;
+				var y = (parseFloat(v[7]) + 180) / 360 * 300;
+				console.log(x, y);
 			});
 			socket.on('disconnect', function(){
 
