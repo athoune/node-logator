@@ -1,15 +1,49 @@
 var net = require('net'),
-	Index = require('ip2something').Index;
+	Index = require('ip2something').Index,
+	http = require('http'),
+	io = require('socket.io'),
+	fs = require('fs'),
+	url = require('url');
 
 var idx = new Index();
+
+var web = http.createServer(function(req, res){ 
+	var path = url.parse(req.url).pathname;
+	switch (path) {
+	case '/':
+		res.writeHead(200, {'Content-Type': 'text/html'}); 
+		res.write(fs.readFileSync('index.html')); 
+		res.end(); 
+	break;
+	
+}
+ // your normal server code 
+});
+web.listen(8000);
+
+// socket.io 
+var ws = io.listen(web); 
+ws.on('connection', function(client){
+	//console.log(client);
+	//client.broadcast({ announcement: client.sessionId + ' connected' });
+	// new client is here! 
+	client.on('message', function(){
+		
+	});
+	client.on('disconnect', function(){
+		
+	});
+});
 
 var server = net.createServer(function (stream) {
 	var tmp = "";
 	stream.setEncoding('utf8');
-  /*stream.on('connect', function () {
-    stream.write('hello\r\n');
-  });*/
-  stream.on('data', function (chunk) {
+	stream.on('connect', function () {
+		//stream.write('hello\r\n');
+		console.log("connection to log server");
+	});
+	stream.on('data', function (chunk) {
+		//console.log(chunk);
 		tmp += chunk;
 		var lines = tmp.split("\n");
 		if(lines.length > 1) {
@@ -17,6 +51,7 @@ var server = net.createServer(function (stream) {
 			lines.forEach(function(line) {
 				idx.search(line.split(' ')[0], function(loc) {
 					console.log(loc);
+					//ws.broadcast(loc);
 				});
 			});
 		}
