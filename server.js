@@ -18,6 +18,10 @@ var web = http.createServer(function(req, res){
 		res.writeHead(200, {'Content-Type': 'image/jpeg'});
                 res.write(fs.readFileSync('map.jpg'));
                 res.end();
+	case '/cross.png':
+                res.writeHead(200, {'Content-Type': 'image/png'});
+                res.write(fs.readFileSync('cross.png'));
+                res.end();
 	break;
 	
 }
