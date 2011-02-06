@@ -12,8 +12,11 @@
 				});
 			socket.on('message', function(data){
 				var v = data.split('|');
-				var x = (parseFloat(v[6]) + 180) / 360 * 600;
-				var y = (parseFloat(v[7]) + 180) / 360 * 300;
+				var x = (parseFloat(v[6]) + 180) / 360 * 900;
+				var y = (parseFloat(v[7]) + 180) / 360 * 450;
+				$("#map").append(
+					$('<div style="width: 5px;height:5px;position:float;background-image:url(cross.png);"></div>').css('top', x+"px").css('left', x+"px")
+				);
 				console.log(x, y);
 			});
 			socket.on('disconnect', function(){
@@ -24,6 +27,6 @@
 	</head>
 	<body>
 		<h1>Log powa</h1>
-		<img src="map.jpg" width="600" height="300" id="map"/>
+		<img src="map.jpg" width="900" height="450" id="map" style="position:relative;"/>
 	</body>
 </html>
